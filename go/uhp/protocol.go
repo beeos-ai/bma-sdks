@@ -1,6 +1,6 @@
 // Package uhp is the Go view of the Unified Harness Protocol (UHP) 2026-10-04.
 //
-// uhp.gen.go is generated from the upstream schema and is normative for structure.
+// generated.go is generated from the upstream schema and is normative for structure.
 // This file carries the vocabulary the prose chapters define and the schema does not
 // enumerate: the versions a server serves, the event names, and the error codes. A
 // generator cannot produce these because upstream states them as prose rather than as
