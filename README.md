@@ -13,6 +13,9 @@ facade (`facade-extensions.openapi.yaml`).
 | Go | `github.com/beeos-ai/bma-sdks/go/rest` | Every operation in `rest.openapi.yaml`: agents, agent sessions (create/get/list/update/archive, session model override incl. `expires_with_session`), inputs and events with `session_id`, the SSE stream, artifacts, machines, desktop and terminal sessions and connection tickets, configuration. |
 | Go | `github.com/beeos-ai/bma-sdks/go/facadeext` | BMA extensions to the Anthropic facade: `/v1/sessions/{id}/desktop/stream`, `/v1/sessions/{id}/files` upload/list, and the `bma_sequence`, `Idempotency-Key`, `mcp_servers[].bma_auth` and model-override field types. |
 | Go | `github.com/beeos-ai/bma-sdks/go/executor` | `bma.executor.v1` transport: token bootstrap, WebSocket registration, heartbeat, reconnect, session lifecycle, tool dispatch/cancel, retried tool results, artifact references, and the raw MCP channel. |
+| Go | `github.com/beeos-ai/bma-sdks/go/uhpharness` | UHP 2026-10-04 harness server: implement one `RunTurn` and the package serves `/v1/uhp` the way BMA's UHP gateway does (sessions, SSE with Last-Event-ID, cancel, idempotency, `bma.*` interactions and turn settings). `uhpharness/uhpcheck` is the conformance suite for any UHP harness. |
+| Go | `github.com/beeos-ai/bma-sdks/go/uhpclient` | Platform-side UHP client used to drive BMA or any UHP harness. |
+| Go | `github.com/beeos-ai/bma-sdks/go/uhp` | UHP 2026-10-04 models generated from [`contracts/uhp/`](contracts/uhp) plus the `bma.*` extension vocabulary. |
 | TypeScript | [`@beeos-ai/bma-sdk`](typescript) | Typed REST client (`.`) and facade extensions (`./facade-extensions`). |
 | Python | [`bma-sdk`](python) | `bma_sdk.rest` (generated), `bma_sdk.BmaClient`, `bma_sdk.facade_extensions`. |
 
@@ -225,6 +228,42 @@ working in-process example.
   frames. Process supervision (spawn, stderr limits, restart backoff) and
   automatic reconnection remain adapter responsibilities in this release.
 
+## UHP harness quick start
+
+A process that runs agent turns (for example a local agent on a desktop) is
+driven by the platform like BMA when it serves UHP. The contract is
+`docs/architecture/uhp-harness-integration.md` in beeos-managed-agents.
+
+```go
+server, err := uhpharness.New(uhpharness.Config{
+	Harness: uhp.Harness{Id: "chrn_my_brain", Name: "My brain", Base: "my-brain"},
+	Handler: uhpharness.HandlerFunc(func(ctx context.Context, t *uhpharness.Turn) error {
+		return t.TextDelta("echo: " + t.Input[0].Text)
+	}),
+	Auth: uhpharness.BearerToken(os.Getenv("UHP_HARNESS_TOKEN"), "platform"),
+})
+if err != nil {
+	log.Fatal(err)
+}
+log.Fatal(http.ListenAndServe("127.0.0.1:8765", server.Handler()))
+```
+
+`Turn` also offers `Reasoning`, `FunctionCall`, `FunctionCallOutput`, `Ask`
+(permission/question interactions), `SetEffective` (model, reasoning effort,
+cwd and permission mode that applied), `SetUsage`, and `Appended`/`TakeAppended`
+for input sent while the turn runs; cancellation arrives as `ctx`
+cancellation. [`go/uhpharness/example/localbrain`](go/uhpharness/example/localbrain)
+is a complete scripted harness whose test drives task, stream, approval,
+result, follow-up and cancel through `uhpclient`, and runs the conformance
+suite:
+
+```go
+uhpcheck.Run(t, uhpcheck.Target{
+	BaseURL: "http://127.0.0.1:8765/v1/uhp", Token: token, HarnessID: "chrn_my_brain",
+	Prompt: "hello", SlowPrompt: "slow", InteractionPrompt: "run: ls",
+})
+```
+
 ## Development
 
 ```bash
@@ -237,7 +276,7 @@ uv run --no-project --with pyyaml --with jsonschema \
 ```
 
 `tools/generate.sh` needs Python 3 with PyYAML, Go 1.24+, Node 20+ and uv; it
-pins oapi-codegen v2.7.0, openapi-typescript 7.13.0 and openapi-python-client
+pins oapi-codegen v2.7.0 (v2.8.0 for UHP), openapi-typescript 7.13.0 and openapi-python-client
 0.26.2. Never edit generated files by hand. The SDK tests of all three
 languages replay the same recorded exchanges in
 [`contracts/bma/fixtures/sdk-contract.json`](contracts/bma/fixtures/sdk-contract.json),
