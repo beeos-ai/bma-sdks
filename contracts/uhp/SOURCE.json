@@ -1,0 +1,66 @@
+{
+  "protocol": "uhp",
+  "version": "2026-10-04",
+  "upstream": {
+    "repository": "https://github.com/HarnessRouter/harnessrouter",
+    "commit": "7ae2aa467f54e4132f9753350e3e37f541e8c797",
+    "committed_at": "2026-10-05T03:28:25-07:00",
+    "license": "Apache-2.0",
+    "paths": {
+      "openapi": "protocol/schema/uhp-2026-10-04.openapi.yaml",
+      "jsonschema": "protocol/schema/uhp-2026-10-04.schema.json"
+    }
+  },
+  "vendored": {
+    "upstream/uhp-2026-10-04.openapi.yaml": "f468d74bf02254172c301da29a6b9f1c6ee15f65a3448e7dc7cd2c4196637509",
+    "upstream/uhp-2026-10-04.schema.json": "895bef75a286a11fff0344308896fe6e48adf141780f06bec4bbc0d7681d6411"
+  },
+  "normalized": {
+    "uhp-2026-10-04.openapi.yaml": "52111b18c1b067b04e2e3bd9600332a7a8ad093cedea69b9ddea8ae6fcc7ec1c"
+  },
+  "normalizations": [
+    {
+      "id": "A",
+      "defect": "duplicate YAML mapping key: a stray Plugins description repeated under the Memories tag",
+      "upstream_location": "line 55",
+      "effect": "every strict YAML parser refuses the document, so no generator can load it",
+      "fix": "drop the duplicated description line"
+    },
+    {
+      "id": "B",
+      "defect": "dangling $ref to #/components/responses/BadRequest, which the document never defines",
+      "upstream_location": "line 288 (GET /v1/environments/packages/check)",
+      "effect": "oapi-codegen fails with: map key \"BadRequest\" not found",
+      "fix": "define components.responses.BadRequest over the ErrorEnvelope schema"
+    },
+    {
+      "id": "C",
+      "defect": "seven descriptions written unquoted inside a YAML flow mapping, each carrying a comma or a semicolon, so YAML parses the tail of the sentence as a second key with a null value and the schema gains a property nobody declared",
+      "upstream_location": "lines 2007, 2036, 2207, 2299, 2460, 2483, 2495",
+      "effect": "a permissive loader drops the stray key; Redocly -- which openapi-typescript runs, and which every BeeOS repository configures -- refuses the document outright",
+      "fix": "quote each description, which is what the sentence already meant"
+    },
+    {
+      "id": "E",
+      "defect": "CreateResponseRequest.model, Response.metadata.requested_model, and Response.metadata.model_fallback describe an unknown id as substitutable and mention requested_model only after a different model ran",
+      "upstream_location": "lines 2091, 2165, 2166",
+      "effect": "a client cannot tell an id dispatched as given from a silent substitution, or a requested id that ran from one the server dropped",
+      "fix": "quote that any requested id is dispatched as given and omitted means the harness default, record the id the client sent whenever the client sent one, and set model_fallback only when the harness reports it could not switch"
+    },
+    {
+      "id": "F",
+      "defect": "Response.model is required and described only as the model that actually ran, but a self-hosted harness that runs its own default model may not report which model that was",
+      "upstream_location": "line 2144",
+      "effect": "a server must either invent a model id or send an empty string the client cannot interpret",
+      "fix": "state that an empty string means the server does not know which model ran"
+    }
+  ],
+  "generator_limits": [
+    {
+      "id": "D",
+      "generator": "oapi-codegen v2.8.0",
+      "defect": "OpenAPI 3.1 type arrays are unsupported: MemoryRecord.supersedes is type: [integer, string]",
+      "workaround": "exclude the Memories tag; BeeOS reports the memories capability as false"
+    }
+  ]
+}

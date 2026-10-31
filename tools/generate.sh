@@ -10,6 +10,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
 OAPI_CODEGEN=github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.7.0
+OAPI_CODEGEN_UHP=github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0
 PY_CLIENT=openapi-python-client==0.26.2
 
 go_generate() { # <contract> <config> <output>
@@ -48,6 +49,20 @@ py_generate() { # <contract> <package dir>
 
 go_generate contracts/bma/rest.openapi.yaml tools/oapi-rest.yaml go/rest/generated.go
 go_generate contracts/bma/facade-extensions.openapi.yaml tools/oapi-facadeext.yaml go/facadeext/generated.go
+
+# UHP is generated straight from its OpenAPI 3.1 document, as BeeOS Cloud does:
+# downgrade_openapi.py refuses its scalar unions, and v2.8.0 reads 3.1 itself.
+uhp_tmp="$(mktemp)"
+(cd go && go run "$OAPI_CODEGEN_UHP" -config ../tools/oapi-uhp.yaml \
+  ../contracts/uhp/uhp-2026-10-04.openapi.yaml) > "$uhp_tmp"
+{
+  echo "// Code generated from contracts/uhp/uhp-2026-10-04.openapi.yaml by tools/generate.sh; DO NOT EDIT."
+  echo
+  cat "$uhp_tmp"
+} > go/uhp/generated.go
+rm -f "$uhp_tmp"
+gofmt -w go/uhp/generated.go
+echo "wrote go/uhp/generated.go"
 
 (cd typescript && npm ci --silent && npm run --silent generate)
 echo "wrote typescript/src/generated"

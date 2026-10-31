@@ -1,0 +1,22 @@
+# The Go view of UHP 2026-10-04 (contracts/uhp). Models only: go/uhpharness
+# hand-writes the server and go/uhpclient the streaming client.
+#
+# skip-prune keeps `Event`, the streamed-event envelope: no operation references
+# it (an SSE body is declared as `type: string`), so it would otherwise be pruned.
+# The optional `memories` capability is excluded, as in BeeOS Cloud's
+# backend/openapi/uhp/oapi-codegen.yaml: MemoryRecord.supersedes is a union of
+# two scalars that oapi-codegen cannot represent, and a UHP harness built on
+# this SDK reports `memories: false`.
+package: uhp
+generate:
+  models: true
+output-options:
+  skip-prune: true
+  exclude-tags:
+    - Memories
+  exclude-schemas:
+    - MemoryRecord
+    - MemoryGraph
+    - MemoryJob
+    - MemoryRecall
+    - MemoryRecordList
