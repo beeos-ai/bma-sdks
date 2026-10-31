@@ -214,3 +214,13 @@ func runExecutorServer(ctx context.Context, ws *websocket.Conn) error {
 type errString string
 
 func (e errString) Error() string { return string(e) }
+
+func TestNewClientAllowsMachineScopedTokenSourceWithoutEnvironment(t *testing.T) {
+	source := func(context.Context) (ExecutorTokenResponse, error) { return ExecutorTokenResponse{}, nil }
+	if _, err := NewClient(Options{TokenSource: source}); err != nil {
+		t.Fatalf("machine-scoped client: %v", err)
+	}
+	if _, err := NewClient(Options{EnvironmentKey: "key"}); err == nil {
+		t.Fatal("environment-key client without environment id must fail")
+	}
+}

@@ -81,8 +81,9 @@ type Options struct {
 	BaseURL string
 	WSURL   string
 	// TokenSource replaces the POST /v1/executors/token bootstrap, for example
-	// StaticToken for a local harness on a loopback listener. When set,
-	// EnvironmentKey and BaseURL are not used.
+	// StaticToken for a local harness on a loopback listener, or a machine
+	// token exchange for a machine-scoped executor (EnvironmentID empty). When
+	// set, EnvironmentKey and BaseURL are not used.
 	TokenSource func(ctx context.Context) (ExecutorTokenResponse, error)
 	// HTTPClient is used for the token request. Defaults to http.DefaultClient.
 	HTTPClient *http.Client
@@ -217,8 +218,10 @@ func NewClient(options Options) (*Client, error) {
 	if options.TokenSource == nil && strings.TrimSpace(options.EnvironmentKey) == "" {
 		return nil, errors.New("bmaexecutor: EnvironmentKey is required")
 	}
-	if strings.TrimSpace(options.EnvironmentID) == "" {
-		return nil, errors.New("bmaexecutor: EnvironmentID is required")
+	if options.TokenSource == nil && strings.TrimSpace(options.EnvironmentID) == "" {
+		// A machine-scoped executor (machine daemon token, bma-api) has no
+		// environment; it supplies its executor token through TokenSource.
+		return nil, errors.New("bmaexecutor: EnvironmentID is required without a TokenSource")
 	}
 	if options.Executor.Name == "" {
 		return nil, errors.New("bmaexecutor: Executor.Name is required")
