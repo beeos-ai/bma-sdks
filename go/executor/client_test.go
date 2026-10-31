@@ -217,10 +217,10 @@ func (e errString) Error() string { return string(e) }
 
 func TestNewClientAllowsMachineScopedTokenSourceWithoutEnvironment(t *testing.T) {
 	source := func(context.Context) (ExecutorTokenResponse, error) { return ExecutorTokenResponse{}, nil }
-	if _, err := NewClient(Options{TokenSource: source}); err != nil {
+	if _, err := NewClient(Options{TokenSource: source, Executor: ExecutorInfo{Name: "m", OS: "linux", Arch: "amd64", Version: "1"}}); err != nil {
 		t.Fatalf("machine-scoped client: %v", err)
 	}
-	if _, err := NewClient(Options{EnvironmentKey: "key"}); err == nil {
+	if _, err := NewClient(Options{EnvironmentKey: "key", Executor: ExecutorInfo{Name: "m", OS: "linux", Arch: "amd64", Version: "1"}}); err == nil {
 		t.Fatal("environment-key client without environment id must fail")
 	}
 }
