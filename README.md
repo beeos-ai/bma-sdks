@@ -30,14 +30,14 @@ size and sha256.
 ## Install
 
 ```bash
-go get github.com/beeos-ai/bma-sdks/go@v0.3.0
+go get github.com/beeos-ai/bma-sdks/go@v0.4.0
 ```
 
-The TypeScript and Python packages are tagged `ts/v0.3.0` and
-`python/v0.3.0`. Release tags publish them as `@beeos-ai/bma-sdk` on npm and
+The TypeScript and Python packages are tagged `ts/v0.4.0` and
+`python/v0.4.0`. Release tags publish them as `@beeos-ai/bma-sdk` on npm and
 `bma-sdk` on PyPI, and until those credentials are configured (see
 [Release](#release)) install them from the tag, for example
-`pip install "git+https://github.com/beeos-ai/bma-sdks@python/v0.3.0#subdirectory=python"`.
+`pip install "git+https://github.com/beeos-ai/bma-sdks@python/v0.4.0#subdirectory=python"`.
 
 ## REST quick start
 
