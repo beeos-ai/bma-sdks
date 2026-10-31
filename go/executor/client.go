@@ -600,15 +600,35 @@ func (c *Client) fetchToken(ctx context.Context) (ExecutorTokenResponse, error) 
 	return token, nil
 }
 
+// protocolVersionV11 is the v1.1 subprotocol and register protocol value;
+// the agent capability requires it.
+const protocolVersionV11 = "bma.executor.v1.1"
+
+// negotiatedProtocol is the register protocol: it must equal the subprotocol
+// the server selected.
+func negotiatedProtocol(selected string) string {
+	if selected == "" {
+		return ProtocolVersion
+	}
+	return selected
+}
+
 func (c *Client) connect(ctx context.Context, token ExecutorTokenResponse) error {
 	wsURL := c.options.WSURL
 	if wsURL == "" {
 		wsURL = token.WSURL
 	}
 	c.setState(ConnectionStateConnecting)
+	subprotocols := []string{WSSubprotocol}
+	c.mu.Lock()
+	if c.agent != nil {
+		// Agent methods are v1.1; a v1 server ignores the first offer.
+		subprotocols = []string{protocolVersionV11, WSSubprotocol}
+	}
+	c.mu.Unlock()
 	ws, _, err := websocket.Dial(ctx, wsURL, &websocket.DialOptions{
 		HTTPHeader:   authHeader(token.Token),
-		Subprotocols: []string{WSSubprotocol},
+		Subprotocols: subprotocols,
 	})
 	if err != nil {
 		return fmt.Errorf("bmaexecutor: websocket dial: %w", err)
@@ -627,7 +647,7 @@ func (c *Client) connect(ctx context.Context, token ExecutorTokenResponse) error
 
 	params := registerParams{
 		ExecutorRegisterParams: ExecutorRegisterParams{
-			Protocol:      ProtocolVersion,
+			Protocol:      negotiatedProtocol(ws.Subprotocol()),
 			EnvironmentID: c.options.EnvironmentID,
 			Executor:      c.options.Executor,
 			Resume:        c.resumeState(),
