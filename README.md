@@ -1,5 +1,13 @@
 # BMA SDKs
 
+> **This repository has moved.** The SDKs now live in two repositories; the
+> npm and PyPI package names are unchanged:
+>
+> - **bma-sdk** (REST client) → [`beeos-ai/bma-sdk`](https://github.com/beeos-ai/bma-sdk),
+>   Go module `github.com/beeos-ai/bma-sdk` (was `github.com/beeos-ai/bma-sdks/go`), from 0.4.2.
+> - **bma-executor-sdk** (Executor Protocol) → [`beeos-ai/bma-executor-sdk`](https://github.com/beeos-ai/bma-executor-sdk),
+>   Go module `github.com/beeos-ai/bma-executor-sdk` (was `github.com/beeos-ai/bma-sdks/executor`), from 0.4.9.
+
 Go, TypeScript and Python SDKs for BMA (BeeOS Managed Agents), generated from
 the BMA contracts in [`contracts/bma/`](contracts/bma). Two SDK families live
 in this repository and version independently:

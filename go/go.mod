@@ -1,3 +1,4 @@
+// Deprecated: moved to github.com/beeos-ai/bma-sdk.
 module github.com/beeos-ai/bma-sdks/go
 
 go 1.24.0
