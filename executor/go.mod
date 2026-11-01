@@ -1,3 +1,4 @@
+// Deprecated: moved to github.com/beeos-ai/bma-executor-sdk.
 module github.com/beeos-ai/bma-sdks/executor
 
 go 1.24.0
