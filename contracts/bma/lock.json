@@ -4,7 +4,7 @@
   "rest": {
     "source_path": "backend/api/openapi/openapi.yaml",
     "contract": "contracts/bma/rest.openapi.yaml",
-    "sha256": "763eb9294f4c58cf80f9b8bba8755756a4a6a2dc0cf130a623791d16e08086ef"
+    "sha256": "3e976b8a5e0fc4a6ef60909a03f7456f427ae3b3e145b916d5d8d3fe77b5d21c"
   },
   "facade": {
     "source_path": "backend/internal/managedagents/server.go",

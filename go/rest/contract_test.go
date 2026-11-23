@@ -49,7 +49,7 @@ func TestContractSessionLifecycle(t *testing.T) {
 	created, err := client.CreateAgentSessionWithResponse(ctx, s["org"], s["project"], s["agent"],
 		bmarest.CreateAgentSessionJSONRequestBody{
 			AgentConfigId:  ptr(s["config"]),
-			IdempotencyKey: ptr("beework-task-1"),
+			IdempotencyKey: ptr("task-1"),
 			Metadata:       &map[string]any{"title": "Quarterly report"},
 			ModelOverride:  overrideInput(),
 		})

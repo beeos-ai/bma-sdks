@@ -172,7 +172,7 @@ def test_session_lifecycle() -> None:
             create_agent_session.sync_detailed(
                 S["org"], S["project"], S["agent"], client=bma.rest,
                 body=CreateAgentSessionRequest(
-                    agent_config_id=S["config"], idempotency_key="beework-task-1",
+                    agent_config_id=S["config"], idempotency_key="task-1",
                     metadata=metadata, model_override=override(),
                 ),
             )
