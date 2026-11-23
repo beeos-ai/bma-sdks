@@ -1,6 +1,6 @@
 # BMA SDKs
 
-> **This repository has moved.** The SDKs now live in two repositories; the
+> **This repository has moved and is no longer maintained.** The SDKs now live in two repositories; the
 > npm and PyPI package names are unchanged:
 >
 > - **bma-sdk** (REST client) → [`beeos-ai/bma-sdk`](https://github.com/beeos-ai/bma-sdk),
@@ -103,7 +103,7 @@ func main() {
 		&bmarest.CreateAgentParams{IdempotencyKey: ptr(bmarest.IdempotencyKey("launch-1"))},
 		bmarest.CreateAgentJSONRequestBody{
 			Profile: ptr(bmarest.AgentProfileID("aprf_...")),
-			Name:    ptr(bmarest.AgentName("Beework")),
+			Name:    ptr(bmarest.AgentName("Support agent")),
 			InitialInput: &bmarest.AgentLaunchInitialInput{
 				ContentBlocks: []bmarest.TextContentBlock{
 					bmarest.NewTextContentBlock("Start the task."),

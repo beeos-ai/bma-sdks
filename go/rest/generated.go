@@ -9460,7 +9460,7 @@ type ListFilesParams struct {
 	// ScopeId Only files scoped to this session (ses_...).
 	ScopeId *string `form:"scope_id,omitempty" json:"scope_id,omitempty"`
 
-	// Metadata Label filter as key:value, for example beework_space_id:sp_123. Repeat to require several labels.
+	// Metadata Label filter as key:value, for example space_id:sp_123. Repeat to require several labels.
 	Metadata *[]string `form:"metadata,omitempty" json:"metadata,omitempty"`
 }
 

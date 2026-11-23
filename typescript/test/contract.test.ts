@@ -160,7 +160,7 @@ test("session lifecycle", async () => {
         params: { path: scope() },
         body: {
           agent_config_id: s.config,
-          idempotency_key: "beework-task-1",
+          idempotency_key: "task-1",
           metadata: { title: "Quarterly report" },
           model_override: override(),
         },

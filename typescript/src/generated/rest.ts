@@ -14373,7 +14373,7 @@ export interface operations {
                 page?: string;
                 /** @description Only files scoped to this session (ses_...). */
                 scope_id?: string;
-                /** @description Label filter as key:value, for example beework_space_id:sp_123. Repeat to require several labels. */
+                /** @description Label filter as key:value, for example space_id:sp_123. Repeat to require several labels. */
                 metadata?: string[];
             };
             header?: never;

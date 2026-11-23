@@ -52,7 +52,7 @@ func TestNewValidation(t *testing.T) {
 }
 
 // TestGeneratedOperationCoverage pins the generated methods used by the
-// Beework BMA transport and by the previous hand-written REST surface.
+// a downstream BMA transport and by the previous hand-written REST surface.
 func TestGeneratedOperationCoverage(t *testing.T) {
 	operations := map[string]any{
 		"CreateAgent":                   (*ClientWithResponses).CreateAgentWithResponse,
