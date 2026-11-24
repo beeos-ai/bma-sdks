@@ -1,6 +1,6 @@
 # BMA executor integration guide (overview)
 
-[中文](README.zh-CN.md) · [Repository README](../../README.md)
+[Repository README](../../README.md)
 
 The entry point for integrators who build an executor (a "hand"), drive one (a "brain" / harness), or connect a complete local agent to BMA: what the Executor Protocol is, the deployment shapes, how the SDK is split, how to connect, and what works today.
 
