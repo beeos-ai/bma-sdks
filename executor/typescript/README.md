@@ -15,7 +15,7 @@ socket or Windows named pipe (`unix://`, `npipe://`), in-process.
 | Version | 0.4.8 (tag `executor-ts/v0.4.8`), see [CHANGELOG](../../CHANGELOG.md) |
 | Protocol | `bma.executor.v1.1` (contract 1.1.0, [`lock.json`](../../contracts/bma/executor/lock.json)) |
 | Node.js | 20 or newer; ESM, depends on `ws` |
-| Integration guide | [docs/executor](../../docs/executor/README.md) ([中文](../../docs/executor/README.zh-CN.md)) |
+| Integration guide | [docs/executor](../../docs/executor/README.md) |
 
 ```sh
 npm install @beeos-ai/bma-executor-sdk@0.4.8

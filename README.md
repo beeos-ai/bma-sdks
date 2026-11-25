@@ -45,7 +45,7 @@ Release notes: [CHANGELOG](CHANGELOG.md) and
 | Read next | |
 | --- | --- |
 | Call the BMA API | [REST quick start](#rest-quick-start) below; [TypeScript](typescript/README.md), [Python](python/README.md) |
-| Write or drive an executor | [Executor integration guide](docs/executor/README.md) ([中文](docs/executor/README.zh-CN.md)); package READMEs for [Go](executor/README.md), [TypeScript](executor/typescript/README.md), [Python](executor/python/README.md) |
+| Write or drive an executor | [Executor integration guide](docs/executor/README.md); package READMEs for [Go](executor/README.md), [TypeScript](executor/typescript/README.md), [Python](executor/python/README.md) |
 
 ## Packages
 
@@ -310,15 +310,14 @@ SDKs.
 
 The Executor Protocol connects a harness ("brain": the BMA platform or your
 local agent) with executors ("hands" that run tools, processes and MCP
-servers). Start with the [integration guide](docs/executor/README.md)
-([中文](docs/executor/README.zh-CN.md)):
+servers). Start with the [integration guide](docs/executor/README.md):
 
 | I want to | Start here |
 | --- | --- |
-| Understand roles, deployment shapes and what is available | [Overview](docs/executor/README.md) ([中文](docs/executor/README.zh-CN.md)) |
-| Write an executor (a "hand" the BMA cloud or a local brain drives) | [Quick start](docs/executor/quickstart.md) ([中文](docs/executor/quickstart.zh-CN.md)), then the [protocol reference](docs/executor/protocol-reference.md) ([中文](docs/executor/protocol-reference.zh-CN.md)) |
-| Drive an executor (be the harness / local brain) | [Local connection and auth](docs/executor/local-connection.md) ([中文](docs/executor/local-connection.zh-CN.md)) and `Harness` in the package READMEs |
-| Connect a full local agent (turns in, agent events out) | [Agent capability](docs/executor/agent-capability.md) ([中文](docs/executor/agent-capability.zh-CN.md)) |
+| Understand roles, deployment shapes and what is available | [Overview](docs/executor/README.md) |
+| Write an executor (a "hand" the BMA cloud or a local brain drives) | [Quick start](docs/executor/quickstart.md), then the [protocol reference](docs/executor/protocol-reference.md) |
+| Drive an executor (be the harness / local brain) | [Local connection and auth](docs/executor/local-connection.md) and `Harness` in the package READMEs |
+| Connect a full local agent (turns in, agent events out) | [Agent capability](docs/executor/agent-capability.md) |
 
 API documentation and runnable examples per language:
 
